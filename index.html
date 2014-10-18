@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Inform & Web</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+  <meta name="author" content="gaotian">
+  <link rel="stylesheet" href="style.css">
+
+  
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+if( typeof jQuery == 'undefined' ) {
+document.write( unescape( "%3Cscript src='jquery-1.7.1.min.js' type='text/javascript'%3E%3C/script%3E" ) );
+}
+</script>
+
+<script type="text/javascript" src="interpreter/jquery.jplayer.min.js"></script>
+<script type="text/javascript" src="interpreter/jquery.qtip.min.js"></script>
+<script type="text/javascript" src="interpreter/jquery.noty.js"></script>
+<script type="text/javascript" src="interpreter/default.js"></script>
+<script type="text/javascript" src="interpreter/layouts.js"></script>
+
+<script type="text/javascript" src="interpreter/parchment.min.js"></script>
+<script type="text/javascript" src="interpreter/vorple.min.js"></script>
+<script type="text/javascript" src="vorple.custom.js"></script>
+
+<link rel="stylesheet" href="interpreter/parchment.min.css">
+<link rel="stylesheet" href="interpreter/jquery.qtip.min.css">
+<link rel="stylesheet" href="interpreter/vorple.css">
+ <link rel="stylesheet" href="custom.css">
+ <link href='http://fonts.googleapis.com/css?family=Open+Sans|Miltonian+Tattoo|IM+Fell+English|Junge|Aclonica|Unlock|Orbitron:700' rel='stylesheet' type='text/css'>
+
+<script type="text/javascript">
+parchment.options.lib_path = 'interpreter/';
+parchment.options.default_story = [ "Inform-Web communication.zblorb", "interpreter/Inform-Web communication.zblorb.js" ];
+parchment.options.lock_story = 1;
+
+$( function() {
+$( '.coverimage, .links, .interpretercredit' ).detach();
+$( '#vorpleContainer' ).unwrap();
+});
+
+vorple.media.defaults.swfPath = 'Jplayer.swf';
+vorple.media.defaults.audioPath = '.';
+vorple.media.defaults.imagePath = '.';
+vorple.media.defaults.musicPath = '.';
+vorple.media.defaults.videoPath = '.';
+
+vorple.core.init( parchment );
+parchment.init();
+</script>
+  
+</head>
+
+<!-- ************************************************************************Début du body************************************************************************ -->
+
+<body class="play">
+<div class="container">
+
+<div id='comment'>
+	<h3>Comments :</h3>
+	<div id='comment1' class='nlien' onclick='read("#comment1", "#comment2", "#vorpleContainer");'>
+		<p>By clicking on this part, you lanch an interactive fiction.</p>
+	</div>
+	<div id='comment2' class='cache'>
+		<p>Now, you can play the fiction.</p>
+	</div>
+</div>
+
+<div id='intro'>
+	<hgroup onclick='begin();' class='nlien' id='titres'>
+		<h1>Vorple | Démonstration 01</h1>
+		<h2>How to combine Inform and Javascript</h2>
+		<h3>Gaétan Darquié</h3>
+	</hgroup>
+</div>
+
+<div class="coverimage"><span><a href="Cover.jpg"><img src="Small Cover.jpg" border="1" /></a></span></div>
+<div class="links">
+<div class="smalltitle">Inform/Web communication</div>
+<ul>
+<li><a href="index.html">Home page</a></li>
+</ul>
+</div>
+
+<div id="gameport">
+	<div id="vorpleContainer">
+		<div id="vorple"></div>
+		<div id="vorpleInput"></div>
+		<div id="parchment"></div>
+		<div class="clearAll"></div>
+		<div id="vorple-media"></div>
+	</div>
+</div>
+
+<div id='hyper' class='nlien'>
+	<div id='hyper1' onclick='display("#hyper2");'>
+		<p>You've just triggered a javascript effect with inform.</p>
+	</div>
+	<div id='hyper2' class='cache' onclick='answer();'>
+		<p>And at the same time, you've transmit a variable.</p>
+	</div>
+</div>
+
+<div id='code'>
+	
+	<h1>Code Inform</h1>
+
+	<pre>
+		"Inform/Web communication" by gaotian
+
+Include Vorple Core by The Vorple Project.
+Include Notifications by The Vorple Project.
+Include Hypertext by The Vorple Project.
+
+Release along with "Vorple" interpreter.
+
+The Demo is a room. "This is the demo room where you can make some actions like proceeding.".
+The DarkRoom is a room. "Inside the room, there is something strange...". The printed name of DarkRoom is "A dark room";
+The exit is a room. It is south of the DarkRoom.
+
+The lamp is a device in the DarkRoom.
+The note is an object.
+
+[faire d'inform un déclencheur]
+
+_exit is a number variable. _exit is 0.
+_test is a number variable. _test is 255.
+_proceed is a number variable. _proceed is 0.
+_noir is a number variable. _noir is 0.
+
+When play begins:
+	say "This text is an exemple of Inform text playable in a web browser, using Vorple and where Inform text and interaction can trigger some javascript action.[paragraph break]";
+	say "For exemple if you write the command [bold type]'proceed'[roman type]...";
+	[show notification "Welcome!";
+	display "Vorple web page" linking to url "http://index.html?suite";
+	eval "var yes = [_test]";
+	eval "var no = document.getElementById('test')";
+	eval "var okok= no.innerHTML";]
+	
+Instead of showing:
+	say "Demo";
+	
+Proceeding is an action applying to nothing.
+Understand "proceed" as proceeding.
+
+A report rule for proceeding:
+	say "You proceed.";
+
+Alerting is an action applying to nothing.
+Understand "alert" as alerting.
+
+A report rule for alerting:
+	say "You've called an alert.";
+
+Continuing is an action applying to nothing.
+Understand "continue" as continuing.
+
+A report rule for continuing:
+	now the player is in the darkRoom;
+	now _noir is 1.
+
+[Exceptions]
+
+After proceeding:
+	now _proceed is 1;
+	say "With Vorple, you can easily create JS alert or notification.";
+	show notification "This is an example of a notification.";
+	say "You can create alert to. Just write [bold type]alert[roman type] to test it.[paragraph break]";
+	continue one;
+	[create an alert];
+
+Scene1 is a scene. Scene1 begins when _proceed is 1. 
+
+After alerting:
+	continue one;
+	eval "alert('This is an alert's example.')";
+
+To continue one:
+	say "We can also use Inform to continue the fiction outside inform. When you activate something, you finish the IF and you even can transmit a variable. To see an exemple, simply write [bold type]continue[roman type] when you're ready.";
+	
+Noir is a scene. Noir begins when _noir is 1. 
+When Noir begins :
+	say "You have to [bold type]turn on the lamp[roman type].";
+	
+After switching on the lamp:
+	say "The light reveal a note.The exit is at south. What will you choose : [bold type]examine the note[roman type] or [bold type]going south[roman type]?";
+	now the note is in the DarkRoom;
+
+Instead of examining the note during Noir:
+	say "You leave the room";
+	eval "$('#hyper').fadeIn(2000)";
+	eval "$('body').css('background','white')";
+	eval "_answer = 1";
+	eval "$('#comment').hide()";
+	eval "$('#vorpleContainer').hide()";
+
+Instead of going south during Noir:
+	say "You leave the room";
+	eval "$('#hyper').fadeIn(2000)";
+	eval "$('body').css('background','white')";
+	eval "_answer = 2";
+	eval "$('#comment').hide()";
+	eval "$('#vorpleContainer').hide()";
+
+	</pre>
+
+	<h1>Code Javascript</h1>
+	<pre>
+
+$("body").css("background","white");
+
+$("#vorpleContainer").hide();
+$("#comment").hide();
+
+$("#vorpleContainer").css("background","white");
+$("#vorpleContainer").css("border", 0);
+$("#vorpleContainer").css("-webkit-box-shadow", "0px 0px 0px #FFF");
+
+var _answer = 0;
+
+
+function intro(){
+	$("#intro h1").hide();
+	$("#intro h3").hide();
+	$("#intro h1").fadeIn(2000);
+	$("#intro h3").delay(500).fadeIn(3000);
+	vertical("#intro");
+	vertical("#hyper");
+}
+
+function begin(){
+	$("#titres").hide();
+	$("#comment").fadeIn(1000);
+}
+
+function comment(a, b){
+	$(a).hide();
+	$(b).show();
+}
+
+function display(x){
+	$(x).fadeIn(1000);
+}
+
+function read(a,b,x){
+	comment(a, b);
+	display(x);
+}
+
+function answer(){
+
+	var _texte = "";
+
+	if(_answer == 1){
+		_texte = "<p>That's why I know <b>you've read the note</b>.</p>";
+	}
+	else if (_answer == 2){
+		_texte = "<p>That's why I know <b>you've gone south without reading the note</b>.</p>";
+	}
+	else{
+		_texte = "<p>Sorry I don't understand.</p>";
+	}
+
+	$("#hyper").html(_texte+"<button class='button' onclick='code();'>Show the code</button>");
+
+}
+
+
+//Design
+
+//Afficher un bloc au centre de la page (pratique pour les titres)
+
+function vertical(x)
+{
+	$(document).ready(function() {
+		$(x).css({
+	      position:'absolute',
+	      left:($(window).width() - $(x).outerWidth()) / 2,
+	      top:($(window).height() - $(x).outerHeight()) / 2.3 //légèrement remonté
+	    });
+	  // $(window).resize() est appelÃ©e chaque fois que la fenÃªtre est redimensionnÃ©e par l'utilisateur.
+	  $(window).resize(function() {
+	    $(x).css({
+	      position:'absolute',
+	      left:($(window).width() - $(x).outerWidth()) / 2,
+	      top:($(window).height() - $(x).outerHeight()) / 2.3 //légèrement remonté
+	    });
+	  });
+	});
+}
+
+function stopVertical(){
+	$("#intro").css("postition","relative");
+	$("#intro").css("top","0.5em");
+}
+
+function code(){
+	$("#code").fadeIn();
+}
+
+intro();
+
+	</pre>
+	<div id='lienAcceuil'>
+		<a href='play2.html' title='You will have to redo everything'>Retour à la page d'accueil</p>
+	</div>
+</div>
+
+
+
+</div>
+<div class="interpretercredit"><a href="http://vorple-if.com">Vorple</a></div>
+
+<script>
+	
+	$("body").css("background","white");
+
+	$("#vorpleContainer").hide();
+	$("#comment").hide();
+
+	$("#vorpleContainer").css("background","white");
+	$("#vorpleContainer").css("border", 0);
+	$("#vorpleContainer").css("-webkit-box-shadow", "0px 0px 0px #FFF");
+
+	var _answer = 0;
+
+
+	function intro(){
+		$("#intro h1").hide();
+		$("#intro h3").hide();
+		$("#code").hide();
+		$("#titres").fadeIn();
+		$("#intro h1").fadeIn(2000);
+		$("#intro h3").delay(500).fadeIn(3000);
+		vertical("#intro");
+		vertical("#hyper");
+	}
+
+	function begin(){
+		$("#titres").hide();
+		$("#comment").fadeIn(1000);
+	}
+
+	function comment(a, b){
+		$(a).hide();
+		$(b).show();
+	}
+
+	function display(x){
+		$(x).fadeIn(1000);
+	}
+
+	function read(a,b,x){
+		comment(a, b);
+		display(x);
+	}
+
+	function answer(){
+
+		var _texte = "";
+
+		if(_answer == 1){
+			_texte = "<p>That's why I know <b>you've read the note</b>.</p>";
+		}
+		else if (_answer == 2){
+			_texte = "<p>That's why I know <b>you've gone south without reading the note</b>.</p>";
+		}
+		else{
+			_texte = "<p>Sorry I don't understand.</p>";
+		}
+
+		$("#hyper").html(_texte+"<button class='button' onclick='code();'>Show the code</button>");
+
+	}
+
+
+	//Design
+
+	//Afficher un bloc au centre de la page (pratique pour les titres)
+
+	function vertical(x)
+	{
+		$(document).ready(function() {
+			$(x).css({
+		      position:'absolute',
+		      left:($(window).width() - $(x).outerWidth()) / 2,
+		      top:($(window).height() - $(x).outerHeight()) / 2.3 //légèrement remonté
+		    });
+		  // $(window).resize() est appelÃ©e chaque fois que la fenÃªtre est redimensionnÃ©e par l'utilisateur.
+		  $(window).resize(function() {
+		    $(x).css({
+		      position:'absolute',
+		      left:($(window).width() - $(x).outerWidth()) / 2,
+		      top:($(window).height() - $(x).outerHeight()) / 2.3 //légèrement remonté
+		    });
+		  });
+		});
+	}
+
+	function stopVertical(){
+		$("#intro").css("postition","relative");
+		$("#intro").css("top","0.5em");
+	}
+
+	function code(){
+		$("#hyper").hide();	
+		$("#code").fadeIn();
+	}
+
+	intro();
+</script>
+
+</body>
+</html>
+
